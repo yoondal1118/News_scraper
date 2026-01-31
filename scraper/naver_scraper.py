@@ -73,6 +73,7 @@ def scrape_category(category: str) -> list[dict[str, Any]]:
     """특정 카테고리의 뉴스를 수집한다.
     
     별도 Python 프로세스에서 Playwright를 실행하여 Windows 호환성을 보장한다.
+    Streamlit Cloud 환경에서는 브라우저 자동 설치를 시도한다.
     
     Args:
         category: 수집할 카테고리 (정치, 경제, 사회, 생활/문화, IT/과학, 세계)
@@ -86,6 +87,14 @@ def scrape_category(category: str) -> list[dict[str, Any]]:
     """
     if category not in CATEGORIES:
         raise ValueError(f"지원하지 않는 카테고리: {category}")
+
+    # Streamlit Cloud 환경 등을 위한 브라우저 설치 확인 및 실행
+    try:
+        import playwright
+        # 브라우저가 없는 경우 설치 시도
+        subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=False)
+    except ImportError:
+        pass
     
     # 별도 프로세스에서 실행할 스크립트
     script = '''
