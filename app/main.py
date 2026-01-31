@@ -5,7 +5,6 @@ Streamlit 메인 진입점.
 import os
 
 # 서버 시작 시 playwright 브라우저 설치
-os.system("playwright install chromium")
 from playwright.sync_api import sync_playwright
 
 import sys
@@ -104,4 +103,5 @@ elif st.session_state["active_tab"] == "저장된 뉴스기사":
     pages.render_favorites_page()
 else:
     st.info("페이지를 선택해주세요.")
+
 
