@@ -1,66 +1,68 @@
-# Implementation Plan: [FEATURE]
+# 구현 계획: [FEATURE]
 
 **Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Input**: `/specs/[###-feature-name]/spec.md`의 기능 명세
 
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+**Note**: 이 템플릿은 `/speckit.plan` 명령에서 채워진다.
 
-## Summary
+## 요약
 
-[Extract from feature spec: primary requirement + technical approach from research]
+[스펙에서 추출: 1차 요구사항 + 리서치 기반 기술 접근 요약]
 
-## Technical Context
+## 기술 컨텍스트
 
 <!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
+  ACTION REQUIRED: 아래 내용을 실제 프로젝트 기준으로 채운다.
+  구조는 참고용이며, 프로젝트 맥락에 맞게 수정 가능하다.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: [예: Python 3.11 또는 NEEDS CLARIFICATION]  
+**Primary Dependencies**: [예: FastAPI 또는 NEEDS CLARIFICATION]  
+**Storage**: [해당 시: PostgreSQL, 파일 등 또는 N/A]  
+**Testing**: [예: pytest 또는 NEEDS CLARIFICATION]  
+**Target Platform**: [예: Windows, Linux 서버 등 또는 NEEDS CLARIFICATION]
+**Project Type**: [single/web/mobile - 소스 구조 결정]  
+**Performance Goals**: [예: 60 fps, p95 < 200ms 등 또는 NEEDS CLARIFICATION]  
+**Constraints**: [예: 메모리 < 100MB 등 또는 NEEDS CLARIFICATION]  
+**Scale/Scope**: [예: 사용자 10k, 화면 50개 등 또는 NEEDS CLARIFICATION]
 
-## Constitution Check
+## 헌법 체크
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+*GATE: Phase 0 리서치 전에 통과해야 하며, Phase 1 설계 후 재확인한다.*
 
-[Gates determined based on constitution file]
+- Pytest 테스트 선작성 및 RED 확인
+- 단계별 사용자 승인(HITL)
+- 명세/설명 한국어 작성
+- Glassmorphism + Bento Grid 캘린더 UI 적용
+- emoji 라이브러리 사용(윈도우 이모지 금지)
+- 작업 경로: C:\\code\\news_scraper 내부만 사용
 
-## Project Structure
+## 프로젝트 구조
 
-### Documentation (this feature)
+### 문서 구조 (본 기능)
 
 ```text
 specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+├── plan.md              # 이 파일
+├── research.md          # Phase 0 산출물
+├── data-model.md        # Phase 1 산출물
+├── quickstart.md        # Phase 1 산출물
+├── contracts/           # Phase 1 산출물
+└── tasks.md             # Phase 2 산출물
 ```
 
-### Source Code (repository root)
+### 소스 코드 (리포지토리 루트)
 <!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
+  ACTION REQUIRED: 아래 플레이스홀더 트리를 실제 구조로 교체한다.
+  사용하지 않는 옵션은 삭제하고, 선택한 구조는 실제 경로로 확장한다.
 -->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+# [REMOVE IF UNUSED] Option 1: 단일 프로젝트 (기본)
 src/
 ├── models/
 ├── services/
-├── cli/
+├── ui/
 └── lib/
 
 tests/
@@ -68,7 +70,7 @@ tests/
 ├── integration/
 └── unit/
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+# [REMOVE IF UNUSED] Option 2: 웹 애플리케이션 (frontend + backend)
 backend/
 ├── src/
 │   ├── models/
@@ -83,22 +85,21 @@ frontend/
 │   └── services/
 └── tests/
 
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+# [REMOVE IF UNUSED] Option 3: 모바일 + API
 api/
-└── [same as backend above]
+└── [backend와 동일한 구조]
 
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+ios/ 또는 android/
+└── [플랫폼별 구조: 기능 모듈, UI 플로우, 테스트]
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**구조 결정**: [선택한 구조와 실제 디렉터리를 명시]
 
-## Complexity Tracking
+## 복잡도 추적
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
+> **헌법 체크 위반이 있고 반드시 정당화해야 할 때만 작성**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
+| 위반 | 필요한 이유 | 단순 대안이 불가한 이유 |
 |-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| [예: 4번째 프로젝트] | [필요성] | [3개 프로젝트로는 불가한 이유] |
+| [예: Repository 패턴] | [문제 상황] | [직접 DB 접근이 불가한 이유] |

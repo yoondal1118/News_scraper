@@ -11,6 +11,27 @@
 			},
 			"gallery": "https://api.mcp.github.com",
 			"version": "1.0.31"
+		},
+		"microsoft/playwright-mcp": {
+			"type": "stdio",
+			"command": "npx",
+			"args": [
+				"@playwright/mcp@latest"
+			],
+			"gallery": "https://api.mcp.github.com",
+			"version": "0.0.1-seed"
+		},
+		"filesystem": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-filesystem",
+				"C:\\code\\news_scraper"
+			]
+		},
+		"sequential-thinking": {
+		"command": "npx",
+		"args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
 		}
 	},
 	"inputs": [
