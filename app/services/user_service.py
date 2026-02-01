@@ -140,15 +140,18 @@ class UserService:
     def send_verification_email(to_email: str, code: str) -> tuple[bool, str]:
         """실제 SMTP를 사용하여 인증 코드를 발송한다."""
         try:
-            # st.secrets에서 설정 로드
-            smtp_config = st.secrets.get("smtp", {})
-            server = smtp_config.get("server")
-            port = smtp_config.get("port")
-            user = smtp_config.get("user")
-            password = smtp_config.get("password")
+            # st.secrets 접근 방식 최적화 (Streamlit Cloud 대응)
+            try:
+                smtp_config = st.secrets["smtp"]
+                server = smtp_config["server"]
+                port = smtp_config["port"]
+                user = smtp_config["user"]
+                password = smtp_config["password"]
+            except KeyError:
+                return False, "SMTP 설정이 누락되었습니다. (Streamlit Cloud Secrets 설정을 확인하세요)"
 
             if not all([server, port, user, password]):
-                return False, "SMTP 설정이 누락되었습니다. (.streamlit/secrets.toml 확인)"
+                return False, "SMTP 설정값이 비어있습니다."
 
             msg = MIMEMultipart()
             # RFC-5322 준수를 위해 헤더 인코딩 처리
