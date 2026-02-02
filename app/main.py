@@ -16,11 +16,11 @@ from app.ui.theme.styles import get_glassmorphism_css
 from app.ui.components.emoji_helper import get_emoji
 import app.pages as pages
 
-# 페이지 설정 (사이바 숨김)
+# 페이지 설정 (중앙 정렬 레이아웃 적용)
 st.set_page_config(
     page_title="네이버 뉴스 다이어리",
     page_icon=get_emoji("newspaper"),
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="collapsed",
 )
 
@@ -44,46 +44,58 @@ if "user" not in st.session_state:
 if "active_tab" not in st.session_state:
     st.session_state["active_tab"] = "뉴스 수집"
 
-# 로그인 상태 확인
-if not st.session_state["user"]:
-    from app.pages.login_page import render_login_page
-    render_login_page()
-    st.stop()
-else:
-    # 로그인 상태 유지 (쿼리 파라미터 업데이트)
+# 로그인 상태 유지 (쿼리 파라미터 업데이트)
+if st.session_state["user"]:
     if st.query_params.get("user") != st.session_state["user"]:
         st.query_params["user"] = st.session_state["user"]
 
-# --- 로그인된 경우의 화면 구성 ---
+# --- 화면 구성 ---
 
-# 헤더 (로그아웃 버튼 우측 상단)
+# 헤더 (로그아웃/로그인 버튼 우측 상단)
 header_left, header_right = st.columns([8, 2])
 with header_right:
-    if st.button(f"{st.session_state['user']} (로그아웃)", use_container_width=True):
-        st.session_state["user"] = None
-        st.query_params.clear() # 쿼리 파라미터도 삭제
-        st.rerun()
+    if st.session_state["user"]:
+        if st.button(f"{st.session_state['user']} (로그아웃)", use_container_width=True):
+            st.session_state["user"] = None
+            st.query_params.clear() # 쿼리 파라미터도 삭제
+            st.session_state["active_tab"] = "뉴스 수집"
+            st.rerun()
+    else:
+        if st.button("로그인", use_container_width=True):
+            st.session_state["active_tab"] = "로그인"
+            st.rerun()
 
 # 앱 타이틀
 st.title(f"{get_emoji('newspaper')} 네이버 뉴스 다이어리")
 
+def check_login():
+    """로그인 여부를 확인하고, 로그인되지 않았으면 알럿을 띄우고 로그인 유도"""
+    if not st.session_state.get("user"):
+        st.session_state["alert_msg"] = "로그인이 필요한 기능입니다. 로그인 페이지로 이동합니다."
+        st.session_state["active_tab"] = "로그인"
+        st.rerun()
+        return False
+    return True
+
 # 상단 네비게이션 (Floating Island Style)
-nav_cols = st.columns([1, 2, 2, 2, 1])
-with nav_cols[1]:
+nav_cols = st.columns([1, 1, 1], gap="small")
+with nav_cols[0]:
     is_home = st.session_state["active_tab"] == "뉴스 수집"
     if st.button(f"{get_emoji('newspaper')} 뉴스 수집", use_container_width=True, type="primary" if is_home else "secondary"):
         st.session_state["active_tab"] = "뉴스 수집"
         st.rerun()
-with nav_cols[2]:
+with nav_cols[1]:
     is_calendar = st.session_state["active_tab"] == "캘린더"
     if st.button(f"{get_emoji('calendar')} 캘린더", use_container_width=True, type="primary" if is_calendar else "secondary"):
-        st.session_state["active_tab"] = "캘린더"
-        st.rerun()
-with nav_cols[3]:
+        if check_login():
+            st.session_state["active_tab"] = "캘린더"
+            st.rerun()
+with nav_cols[2]:
     is_fav = st.session_state["active_tab"] == "저장된 뉴스기사"
     if st.button(f"{get_emoji('star')} 저장된 뉴스기사", use_container_width=True, type="primary" if is_fav else "secondary"):
-        st.session_state["active_tab"] = "저장된 뉴스기사"
-        st.rerun()
+        if check_login():
+            st.session_state["active_tab"] = "저장된 뉴스기사"
+            st.rerun()
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -94,5 +106,9 @@ elif st.session_state["active_tab"] == "캘린더":
     pages.render_calendar_page()
 elif st.session_state["active_tab"] == "저장된 뉴스기사":
     pages.render_favorites_page()
+elif st.session_state["active_tab"] == "로그인":
+    from app.pages.login_page import render_login_page
+    render_login_page()
+    # 로그인 성공 시 active_tab을 뉴스 수집으로 돌리도록 로그인 페이지 내부 로직 확인 필요
 else:
     st.info("페이지를 선택해주세요.")

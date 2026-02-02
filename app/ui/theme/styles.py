@@ -12,6 +12,14 @@ html, body, [data-testid="stAppViewContainer"] {
     color: #111827;
 }
 
+/* 상단 헤더 및 컨테이너 너비 제한 (반응형 대응) */
+[data-testid="stAppViewBlockContainer"] {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
 [data-testid="stAppViewContainer"] {
     padding-top: 1rem;
 }

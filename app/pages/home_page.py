@@ -152,6 +152,11 @@ def render_home() -> None:
 
     # 수집 실행
     if collect_trigger:
+        if "user" not in st.session_state or not st.session_state["user"]:
+            st.session_state["alert_msg"] = "로그인이 필요한 기능입니다. 로그인 페이지로 이동합니다."
+            st.session_state["active_tab"] = "로그인"
+            st.rerun()
+
         categories_to_collect = (
             CATEGORIES if selected_category == "전체" else [selected_category]
         )
@@ -192,6 +197,11 @@ def render_home() -> None:
             use_container_width=True,
             type="primary",
         ):
+            if "user" not in st.session_state or not st.session_state["user"]:
+                st.session_state["alert_msg"] = "로그인이 필요한 기능입니다. 로그인 페이지로 이동합니다."
+                st.session_state["active_tab"] = "로그인"
+                st.rerun()
+                
             selected_ids = [
                 a["id"] for a in articles if st.session_state.get(f"select_{a['id']}")
             ]
@@ -286,6 +296,11 @@ def render_home() -> None:
                 help="즐겨찾기 토글",
                 type="secondary",
             ):
+                if "user" not in st.session_state or not st.session_state["user"]:
+                    st.session_state["alert_msg"] = "로그인이 필요한 기능입니다. 로그인 페이지로 이동합니다."
+                    st.session_state["active_tab"] = "로그인"
+                    st.rerun()
+                
                 toggle_favorite(article_id)
                 st.rerun()
 

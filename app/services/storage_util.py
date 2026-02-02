@@ -24,8 +24,10 @@ def get_user_data_dir() -> Path:
 def get_news_path() -> Path:
     return get_user_data_dir() / "news_articles.json"
 
+
 def get_diary_path() -> Path:
     return get_user_data_dir() / "diary_entries.json"
+
 
 def get_calendar_path() -> Path:
     return get_user_data_dir() / "calendar_issues.json"
@@ -104,33 +106,45 @@ def get_current_date() -> str:
 # 뉴스 기사 관련 함수
 def load_news_articles() -> list[dict[str, Any]]:
     """뉴스 기사 목록을 로드한다."""
+    if "user" not in st.session_state or not st.session_state["user"]:
+        return []
     return read_json(get_news_path())
 
 
 def save_news_articles(articles: list[dict[str, Any]]) -> bool:
     """뉴스 기사 목록을 저장한다."""
+    if "user" not in st.session_state or not st.session_state["user"]:
+        return False
     return write_json(get_news_path(), articles)
 
 
 # 다이어리 엔트리 관련 함수
 def load_diary_entries() -> list[dict[str, Any]]:
     """다이어리 엔트리 목록을 로드한다."""
+    if "user" not in st.session_state or not st.session_state["user"]:
+        return []
     return read_json(get_diary_path())
 
 
 def save_diary_entries(entries: list[dict[str, Any]]) -> bool:
     """다이어리 엔트리 목록을 저장한다."""
+    if "user" not in st.session_state or not st.session_state["user"]:
+        return False
     return write_json(get_diary_path(), entries)
 
 
 # 캘린더 이슈 관련 함수
 def load_calendar_issues() -> list[dict[str, Any]]:
     """캘린더 이슈 목록을 로드한다."""
+    if "user" not in st.session_state or not st.session_state["user"]:
+        return []
     return read_json(get_calendar_path())
 
 
 def save_calendar_issues(issues: list[dict[str, Any]]) -> bool:
     """캘린더 이슈 목록을 저장한다."""
+    if "user" not in st.session_state or not st.session_state["user"]:
+        return False
     return write_json(get_calendar_path(), issues)
 
 
@@ -182,11 +196,15 @@ def write_json_dict(file_path: Path, data: dict[str, Any]) -> bool:
 
 def load_diary_entries_dict() -> dict[str, dict[str, Any]]:
     """다이어리 엔트리를 딕셔너리(key: article_id) 형태로 로드한다."""
+    if "user" not in st.session_state or not st.session_state["user"]:
+        return {}
     return read_json_dict(get_diary_path())
 
 
 def save_diary_entries_dict(entries: dict[str, dict[str, Any]]) -> bool:
     """다이어리 엔트리를 딕셔너리 형태로 저장한다."""
+    if "user" not in st.session_state or not st.session_state["user"]:
+        return False
     return write_json_dict(get_diary_path(), entries)
 
 

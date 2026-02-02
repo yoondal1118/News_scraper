@@ -50,6 +50,7 @@ def _render_login():
         success, message = UserService.login(username, password)
         if success:
             st.session_state["user"] = username
+            st.session_state["active_tab"] = "뉴스 수집"
             st.toast(f"{username}님, 환영합니다!")
             st.rerun()
         else:
